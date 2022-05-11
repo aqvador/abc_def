@@ -72,26 +72,6 @@ services:
   ######## SUPERVISOR ########
   ########     END    ########
 
-  ########    BEGIN   ########
-  ########     CRON   ########
-  manager_cron:
-    domainname: ${DOMAIN}
-    hostname: ${DOMAIN}
-    working_dir: /app
-    image: ${DOCKER_REGISTRY_HOST}/alltel24/docker/docker-php-cli:latest
-    command: crond -f -l 8
-    restart: always
-    depends_on:
-      manager_redis:
-        condition: service_started
-      manager_database:
-        condition: service_healthy
-    volumes:
-      - ./src:/app:rw
-      - ./docker/cron/start_up.sh:/etc/crontabs/www-data:ro
-  ########    CRON    ########
-  ########     END    ########
-
   manager_nginx:
     domainname: ${DOMAIN}
     hostname: ${DOMAIN}

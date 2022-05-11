@@ -63,6 +63,13 @@
       ]
     },
     "yii\\composer\\Installer::postInstall": {
+      "setPermission": [
+        {
+          "runtime": "0777",
+          "web/assets": "0777",
+          "yii": "0755"
+        }
+      ],
       "generateCookieValidationKey": [
         "config/index-config/web.php"
       ]
@@ -76,8 +83,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "App\\": "App/",
-      "Resources\\": "resources/"
+      "App\\": "App/"
     },
     "files": [
       "resources/pre-load/LoadEnvironment.php"

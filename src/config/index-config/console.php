@@ -11,7 +11,6 @@ $config = [
     'controllerMap' => [
         'migrate' => [
             'class' => \yii\console\controllers\MigrateController::class,
-            'templateFile' => '@resources/Console/Views/migration.php',
             'migrationPath' => ['@resources/Console/Migrations'],
         ],
     ],

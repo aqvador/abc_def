@@ -23,7 +23,11 @@
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
     "vlucas/phpdotenv": "^5.1",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-dom": "*",
+    "ext-libxml": "*",
+    "ramsey/uuid": "^4.5",
+    "monolog/monolog": "^2.8"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
@@ -41,6 +45,9 @@
     "process-timeout": 1800,
     "fxp-asset": {
       "enabled": false
+    },
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
     }
   },
   "scripts": {

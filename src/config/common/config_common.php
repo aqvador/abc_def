@@ -2,6 +2,8 @@
 
 $root = dirname(dirname(__DIR__));
 
+define('BASE_PATH', $root);
+
 $config = [
     'basePath' => $root,
     'vendorPath' => $root . '/vendor',

@@ -3,3 +3,4 @@ docker-compose.yml
 docker/database/data
 docker/redis/data
 .idea
+docker/nginx/logs

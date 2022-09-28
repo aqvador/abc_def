@@ -4,3 +4,4 @@ docker/database/data
 docker/redis/data
 .idea
 docker/nginx/logs
+docker/supervisor/log

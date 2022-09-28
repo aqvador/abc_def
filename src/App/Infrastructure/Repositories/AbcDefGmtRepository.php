@@ -6,17 +6,36 @@ use App\Infrastructure\Contracts\Repositories\AbcDefGmtRepositoryInterface;
 use App\Infrastructure\Repositories\mappers\AbcDefGmtMapper;
 use App\Share\entyties\AbcDefGmt;
 use App\Share\entyties\AbcDefGmts;
+use Ramsey\Uuid\UuidInterface;
 use yii\db\Connection;
+use yii\db\Query;
 
 class AbcDefGmtRepository implements AbcDefGmtRepositoryInterface
 {
+    private const TABLE = 'abc_def_gmt';
+
     public function __construct(private Connection $connection, private AbcDefGmtMapper $mapper)
     {
     }
 
+    public function getByUuid(UuidInterface $uuid): ?AbcDefGmt
+    {
+        $result = (new Query())
+            ->from(self::TABLE)
+            ->where(['uuid' => $uuid->toString()])
+            ->one($this->connection);
+
+        if (!$result) {
+            return null;
+        }
+
+        return $this->mapper->itemMap($result);
+    }
+
     public function queryAllRegion(): AbcDefGmts
     {
-        $result = $this->connection->createCommand('SELECT * FROM abc_def_gmt')->queryAll();
+        $result = (new Query())->from(self::TABLE)->all($this->connection);
+
 
         return $this->mapper->itemsMap($result);
     }
@@ -34,9 +53,8 @@ class AbcDefGmtRepository implements AbcDefGmtRepositoryInterface
 
     public function truncate(): bool
     {
-        $result = $this->connection->createCommand('TRUNCATE TABLE abc_def-gmt')->query();
+        $this->connection->createCommand('TRUNCATE TABLE abc_def-gmt')->query();
 
-        return  true;
-        // TODO: Implement truncate() method.
+        return true;
     }
 }

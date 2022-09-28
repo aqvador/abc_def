@@ -8,7 +8,9 @@ return [
                 'app-logger',
                 [
                     (new \Monolog\Handler\RotatingFileHandler(BASE_PATH . '/runtime/logger/app-log-debug.json', 10, \Monolog\Logger::INFO))->setFormatter(new \Monolog\Formatter\JsonFormatter()),
-                    (new \Monolog\Handler\RotatingFileHandler(BASE_PATH . '/runtime/logger/app-log-error.json', 10, \Monolog\Logger::ERROR))->setFormatter(new \Monolog\Formatter\JsonFormatter())
+                ],
+                [
+                    new \Monolog\Processor\MemoryUsageProcessor()
                 ]
             ]
         ],
@@ -40,6 +42,8 @@ return [
                     'charset' => 'utf8',
 
                     // Schema cache options (for production environment)
+                    'enableLogging' => false,
+                    'enableProfiling' => false,
                     'enableSchemaCache' => env('YII_DEBUG') === false,
                     'schemaCacheDuration' => 3600,
                     'schemaCache' => 'cache'

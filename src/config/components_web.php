@@ -1,8 +1,17 @@
 <?php
 
 return [
-    'errorHandler' => [
-        'errorAction' => 'api/errors'
+//    'errorHandler' => [
+//        'errorAction' => 'api/errors'
+//    ],
+    'urlManager' => [
+        'enablePrettyUrl' => true,
+        'enableStrictParsing' => true,
+        'showScriptName' => false,
+        'cache' => null,
+        'rules' => [
+            'abc-def/region-by-number/<number>' => 'abc-def/region-by-number'
+        ],
     ],
     'response' => [
         'formatters' => [

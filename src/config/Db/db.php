@@ -6,6 +6,8 @@ return [
     'username' => env('DB_USER'),
     'password' => env('DB_PASS'),
     'charset' => 'utf8',
+    'enableLogging' => false,
+    'enableProfiling' => false,
 
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,

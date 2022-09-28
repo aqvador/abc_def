@@ -57,14 +57,14 @@ services:
   manager_cron:
     working_dir: /app
     image: ${DOCKER_REGISTRY_HOST}/cli:latest
-    command: crond -f -l 8
+    command: crond -f -d 7 -l 7 -L /var/log/cron.log
     restart: always
     depends_on:
       manager_redis:
         condition: service_started
     volumes:
       - ./src:/app:rw
-      - ./docker/cron/start_up.sh:/etc/crontabs/www-data:ro
+      - ./docker/cron/start_up.sh:/etc/crontabs/www-data:rw
   ########    CRON    ########
   ########     END    ########
 

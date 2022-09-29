@@ -16,7 +16,7 @@
     - { from: '^DB_SCHEMA=.*', to: "DB_SCHEMA={{ lookup('env', 'DATABASE_SCHEMA') }}" }
     - { from: '^DB_NAME=.*', to: "DB_NAME={{ lookup('env', 'DATABASE_DBNAME') }}" }
     - { from: '^DB_USER=.*', to: "DB_USER={{ lookup('env', 'DATABASE_USER') }}" }
-    - { from: '^DB_PASS=.*', to: "DB_PASSWORD={{ lookup('env', 'DATABASE_PASS') }}" }
+    - { from: '^DB_PASS=.*', to: "DB_PASS={{ lookup('env', 'DATABASE_PASS') }}" }
     # Для глобальных событий
     # Установка доменных значений в окружение
     - { from: '^FULL_DOMAIN_NAME=.*', to: "FULL_DOMAIN_NAME={{ inventory_hostname }}" }
@@ -33,7 +33,7 @@
     # Для Базы данных
     - { from: '^DB_NAME=.*', to: "DB_NAME={{ lookup('env', 'DATABASE_DBNAME') }}" }
     - { from: '^DB_USER=.*', to: "DB_USER={{ lookup('env', 'DATABASE_USER') }}" }
-    - { from: '^DB_PASS=.*', to: "DB_PASSWORD={{ lookup('env', 'DATABASE_PASS') }}" }
+    - { from: '^DB_PASS=.*', to: "DB_PASS={{ lookup('env', 'DATABASE_PASS') }}" }
     - { from: '^DB_EXTERNAL_PORT=.*', to: "DB_EXTERNAL_PORT={{ lookup('env', 'DATABASE_EXTERNAL_PORT') }}" }
 
     - { from: '^DOMAIN=.*', to: "DOMAIN={{ inventory_hostname }}" }

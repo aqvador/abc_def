@@ -7,13 +7,21 @@ use App\Http\Responses\vo\Opsos;
 class AbcDefResponse implements \JsonSerializable
 {
     public function __construct(
-        private int     $number,
-        private string  $region,
-        private string  $offset,
-        private Opsos   $opsos,
-        private ?string $city
+        private int                $number,
+        private string             $region,
+        private \DateTimeImmutable $currentTime,
+        private Opsos              $opsos,
+        private ?string            $city
     )
     {
+    }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getCurrentTime(): \DateTimeImmutable
+    {
+        return $this->currentTime;
     }
 
     /**

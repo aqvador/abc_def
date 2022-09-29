@@ -34,7 +34,7 @@ class RegionByNumberAction extends BaseAction
             $response = new AbcDefResponse(
                 $number,
                 $item->getRegion()->getRegion(),
-                $item->getGmt()->getOffset(),
+                new \DateTimeImmutable('now', new \DateTimeZone($item->getGmt()->getOffset())),
                 new Opsos(
                     $item->getOpsos(),
                     $item->getInn()

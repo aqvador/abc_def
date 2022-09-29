@@ -26,7 +26,7 @@ class LoadAbcDefHandler implements LoadAbcDefInterface
         private AbcDefNormaliz               $normaliz,
     )
     {
-        $this->gmt = $this->repositoryGmt->queryAllRegion();
+        $this->gmt = $this->repositoryGmt->getAllItems();
 
     }
 
@@ -108,7 +108,8 @@ class LoadAbcDefHandler implements LoadAbcDefInterface
     private function searchGmt(AbcDefRegion $region): AbcDefGmt
     {
         if (!$region->isRegion()) {
-            $region->setRegion($this->normaliz->getNormalRegion($region->getValueIsEmptyRegion()));
+            $newRegion = $this->normaliz->getNormalRegion($region->getValueIsEmptyRegion());
+            $region->setRegion($newRegion);
         }
         return $this->gmt->searchGmtByRegion($region->getRegion());
     }

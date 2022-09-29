@@ -9,7 +9,7 @@ use yii\db\Connection;
 
 interface AbcDefGmtRepositoryInterface
 {
-    public function queryAllRegion(): AbcDefGmts;
+    public function getAllItems(): ?AbcDefGmts;
 
     public function truncate(): bool;
 

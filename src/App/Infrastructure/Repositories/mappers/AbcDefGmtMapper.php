@@ -26,7 +26,6 @@ class AbcDefGmtMapper
         }
 
         return new AbcDefGmts(...$response);
-
     }
 
 }

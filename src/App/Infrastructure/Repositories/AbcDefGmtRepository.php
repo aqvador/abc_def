@@ -32,10 +32,12 @@ class AbcDefGmtRepository implements AbcDefGmtRepositoryInterface
         return $this->mapper->itemMap($result);
     }
 
-    public function queryAllRegion(): AbcDefGmts
+    public function getAllItems(): ?AbcDefGmts
     {
         $result = (new Query())->from(self::TABLE)->all($this->connection);
-
+        if (!is_array($result)) {
+            return  null;
+        }
 
         return $this->mapper->itemsMap($result);
     }
@@ -48,7 +50,6 @@ class AbcDefGmtRepository implements AbcDefGmtRepositoryInterface
             'offset' => $gmt->getOffset()
         ]);
         return $result > 0;
-        // TODO need released
     }
 
     public function truncate(): bool

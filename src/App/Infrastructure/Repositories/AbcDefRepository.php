@@ -10,8 +10,6 @@ use yii\db\Query;
 
 class AbcDefRepository implements AbcDefRepositoryInterface
 {
-
-    private const MAX_COUNT_SAVE = 5000;
     private const TABLE = 'abc_def';
 
     public function __construct(private Connection $connection, private AbcDefMapper $mapper)

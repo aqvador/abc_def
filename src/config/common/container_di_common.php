@@ -2,6 +2,14 @@
 
 return [
     'singletons' => [
+        \App\Infrastructure\Contracts\Repositories\AbcDefNormalizeRepositoryInterface::class => [
+            ['class' => \App\Infrastructure\Repositories\AbcDefNormalizeRepository::class],
+            [
+
+            ]
+        ],
+        \yii\di\Container::class => fn() => Yii::$container,
+        \App\Share\entyties\AbcDefRegionsNormalize::class => fn(\yii\di\Container $container) => $container->get(\App\Infrastructure\Contracts\Repositories\AbcDefNormalizeRepositoryInterface::class)->getAllItems(),
         \Psr\Log\LoggerInterface::class => [
             ['class' => \Monolog\Logger::class],
             [

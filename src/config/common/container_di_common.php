@@ -18,7 +18,8 @@ return [
                     (new \Monolog\Handler\RotatingFileHandler(BASE_PATH . '/runtime/logger/app-log-debug.json', 10, \Monolog\Logger::INFO))->setFormatter(new \Monolog\Formatter\JsonFormatter()),
                 ],
                 [
-                    new \Monolog\Processor\MemoryUsageProcessor()
+                    new \Monolog\Processor\MemoryUsageProcessor(),
+                    new \Monolog\Processor\MemoryPeakUsageProcessor()
                 ]
             ]
         ],

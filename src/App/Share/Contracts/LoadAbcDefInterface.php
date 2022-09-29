@@ -4,5 +4,5 @@ namespace App\Share\Contracts;
 
 interface LoadAbcDefInterface
 {
-    public function handle(string $parseUrl): bool;
+    public function handle(string $parseUrl): void;
 }

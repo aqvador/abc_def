@@ -22,12 +22,10 @@ class ParseResourceAction extends Action
     public function run()
     {
         try {
-            $result = $this->handler->handle(env('LINK_RESOURCE_NUMBER'));
-
-            $level = $result ? 'info' : 'error';
-
-            $this->logger->log($level, 'load abc_def from resources numeration');
-
+            $start = time();
+            $this->handler->handle(env('LINK_RESOURCE_NUMBER'));
+            $handleTime = time() - $start;
+            $this->logger->info('load abc def from resources', ['time' => "$handleTime sec."]);
         } catch (\Exception|\Error $e) {
             $this->logger->error('action abc def', [
                 'message' => $e->getMessage(),

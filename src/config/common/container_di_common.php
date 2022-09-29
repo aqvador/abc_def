@@ -45,7 +45,7 @@ return [
             ['class' => \yii\db\Connection::class],
             [
                 [
-                    'dsn' => env('DB_SHEME') . ':host=' . env('DB_HOST') . ';dbname=' . env('DB_NAME') . ';port=' . env('DB_PORT'),
+                    'dsn' => env('DB_SCHEMA') . ':host=' . env('DB_HOST') . ';dbname=' . env('DB_NAME') . ';port=' . env('DB_PORT'),
                     'username' => env('DB_USER'),
                     'password' => env('DB_PASS'),
                     'charset' => 'utf8',

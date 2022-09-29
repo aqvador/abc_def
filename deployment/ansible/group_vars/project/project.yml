@@ -1,0 +1,11 @@
+---
+project:
+  git:
+    link_repo: git@gitlab.alltel24.ru:alltel24/api/abc-def.git
+    version: master
+  deploy_path: /var/www/sites/{{ inventory_hostname }}
+
+  app:
+    debug: false
+    env: prod
+    PROJECT_VERSION: PROD

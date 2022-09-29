@@ -1,0 +1,72 @@
+image: docker-registry.alltel24.ru:5005/alltel24/docker/ansible:alpine3.15
+
+variables:
+  DOCKER_HOST: unix:///var/run/docker.sock
+  GIT_STRATEGY: clone
+
+stages:
+  - check_deploy
+  - release
+  - deploy
+
+before_script:
+  - chmod 600 deployment/* -R
+  - printenv
+
+#check_dev_deploy:
+#  stage: check_deploy
+#  script:
+#    - cd deployment/ansible
+#    - ansible-playbook playbook.yml --limit=dev-integration.alltel24.ru -e "git_version=develop" -C -D
+#  only:
+#    - develop
+#  tags:
+#    - ansible
+#
+#dev_deploy:
+#  stage: deploy
+#  when: manual
+#  script:
+#    - cd deployment/ansible
+#    - ansible-playbook playbook.yml --limit=dev-integration.alltel24.ru -e "git_version=develop"
+#  only:
+#    - develop
+#  tags:
+#    - ansible
+
+#check_prod_deploy:
+#  stage: check_deploy
+#  script:
+#    - echo $CI_COMMIT_TAG
+#    - cd deployment/ansible
+#    - ansible-playbook playbook.yml -e "git_version=$CI_COMMIT_TAG" -C -D
+#  rules:
+#    - if: $CI_COMMIT_REF_PROTECTED && $CI_COMMIT_TAG
+#  tags:
+#    - ansible
+
+prod_deploy:
+  stage: deploy
+  when: manual
+  script:
+    - echo $CI_COMMIT_TAG
+    - cd deployment/ansible
+    - ansible-playbook playbook.yml -e "git_version=$CI_COMMIT_TAG"
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED && $CI_COMMIT_TAG
+  tags:
+    - ansible
+
+release_job:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED && $CI_COMMIT_TAG
+  script:
+    - echo "Running the release $CI_COMMIT_TAG job."
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: 'Release $CI_COMMIT_TAG'
+    description: 'Release created using the release-cli.'
+  tags:
+    - ansible

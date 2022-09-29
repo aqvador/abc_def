@@ -1,0 +1,5 @@
+---
+- hosts: project
+
+  roles:
+    - role: project

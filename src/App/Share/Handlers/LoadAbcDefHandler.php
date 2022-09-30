@@ -86,7 +86,8 @@ class LoadAbcDefHandler implements LoadAbcDefInterface
                         (int)$line[6],
                         $version
                     );
-                    $this->addItem($item, self::MAX_SAVE_COUNT);
+                    $this->addItem($item);
+
                 } catch (\Exception|\Error $e) {
                     $this->errorLines++;
                     $this->logger->warning('parse line', [
@@ -110,11 +111,11 @@ class LoadAbcDefHandler implements LoadAbcDefInterface
         }
     }
 
-    private function addItem(AbcDef $item, ?int $countLines): void
+    private function addItem(AbcDef $item): void
     {
         $this->items[] = $item;
 
-        if (count($this->items) >= $countLines || is_null($countLines)) {
+        if (count($this->items) >= self::MAX_SAVE_COUNT) {
             $this->saveItems();
         }
     }

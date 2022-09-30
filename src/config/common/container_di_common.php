@@ -1,5 +1,7 @@
 <?php
 
+use \alltel24\baseFeature\monolog\handlers\TelegramBotHandler;
+
 return [
     'singletons' => [
         \App\Infrastructure\Contracts\Repositories\AbcDefNormalizeRepositoryInterface::class => [
@@ -16,6 +18,7 @@ return [
                 'app-logger',
                 [
                     (new \Monolog\Handler\RotatingFileHandler(BASE_PATH . '/runtime/logger/app-log-debug.json', 10, \Monolog\Logger::INFO))->setFormatter(new \Monolog\Formatter\JsonFormatter()),
+                    new TelegramBotHandler(env('LOG_TELEGRAM_TOKEN'), env('LOG_TELEGRAM_CHANNEL'), \Monolog\Logger::ERROR, parseMode: 'Markdown')
                 ],
                 [
                     new \Monolog\Processor\MemoryUsageProcessor(),

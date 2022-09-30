@@ -15,10 +15,19 @@ class AbcDef implements \JsonSerializable
         private string       $opsos,
         private AbcDefRegion $region,
         private AbcDefGmt    $gmt,
-        private int          $inn
+        private int          $inn,
+        private int          $version
 
     )
     {
+    }
+
+    /**
+     * @return int
+     */
+    public function getVersion(): int
+    {
+        return $this->version;
     }
 
     /**

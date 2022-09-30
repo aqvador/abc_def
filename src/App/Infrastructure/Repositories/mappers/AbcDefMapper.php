@@ -32,6 +32,7 @@ class AbcDefMapper
             ),
             $this->repositoryGmt->getByUuid(Uuid::fromString($item['gmt'])),
             $item['inn'],
+            $item['version']
 
         );
     }

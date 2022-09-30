@@ -11,6 +11,7 @@ use yii\db\Query;
 class AbcDefRepository implements AbcDefRepositoryInterface
 {
     private const TABLE = 'abc_def';
+    private const TABLE_COPY = 'abc_def_copy';
 
     public function __construct(private Connection $connection, private AbcDefMapper $mapper)
     {
@@ -27,7 +28,8 @@ class AbcDefRepository implements AbcDefRepositoryInterface
             'opsos' => $item->getOpsos(),
             'region' => $item->getRegion(),
             'inn' => (string)$item->getInn(),
-            'gmt' => $item->getGmt()->getUuid()
+            'gmt' => $item->getGmt()->getUuid(),
+            'version' => $item->getVersion()
 
         ])->execute();
 
@@ -37,7 +39,7 @@ class AbcDefRepository implements AbcDefRepositoryInterface
     public function addItems(AbcDef ...$items): bool
     {
         $rows = [];
-        $columns = ['code', 'interval_start', 'interval_end', 'capacity', 'opsos', 'region', 'inn', 'gmt'];
+        $columns = ['code', 'interval_start', 'interval_end', 'capacity', 'opsos', 'region', 'inn', 'gmt', 'version'];
 
         if (empty($items)) {
             return true;
@@ -53,6 +55,7 @@ class AbcDefRepository implements AbcDefRepositoryInterface
                 $item->getRegion(),
                 (string)$item->getInn(),
                 $item->getGmt()->getUuid(),
+                $item->getVersion()
             ];
         }
         return $this->connection->createCommand()->batchInsert(self::TABLE, $columns, $rows)->execute() === count($items);
@@ -77,5 +80,21 @@ class AbcDefRepository implements AbcDefRepositoryInterface
         }
 
         return $this->mapper->itemMapper($result);
+    }
+
+    public function getCurrentVersion(): int
+    {
+        $result = (new Query())
+            ->select('MAX(version) as version')
+            ->from(self::TABLE)
+            ->createCommand($this->connection)
+            ->queryScalar();
+
+        return is_numeric($result) ? (int)$result : 0;
+    }
+
+    public function deleteVersion(int $version): bool
+    {
+        return $this->connection->createCommand()->delete(self::TABLE, ['version' => $version])->execute() > 0;
     }
 }

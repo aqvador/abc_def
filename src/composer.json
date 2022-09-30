@@ -19,7 +19,7 @@
   "minimum-stability": "stable",
   "require": {
     "php": ">=8.0",
-    "yiisoft/yii2": "~2.0.14",
+    "yiisoft/yii2": "~2.0.46",
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
     "vlucas/phpdotenv": "^5.1",
@@ -27,7 +27,8 @@
     "ext-dom": "*",
     "ext-libxml": "*",
     "ramsey/uuid": "^4.5",
-    "monolog/monolog": "^2.8"
+    "monolog/monolog": "^2.8",
+    "alltel24/common-featute": "v1.0.2"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
@@ -86,6 +87,10 @@
     {
       "type": "composer",
       "url": "https://asset-packagist.org"
+    },
+    {
+      "type": "vcs",
+      "url": "https://token_group_alltel24:q1X-ihca_Jxoi3fDzxs8@gitlab.alltel24.ru/alltel24/base-features/common-featute.git"
     }
   ],
   "autoload": {

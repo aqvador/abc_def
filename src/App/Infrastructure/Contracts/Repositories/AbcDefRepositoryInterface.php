@@ -10,6 +10,10 @@ interface AbcDefRepositoryInterface
 
     public function addItems(AbcDef ...$item): bool;
 
+    public function getCurrentVersion(): int;
+
+    public function deleteVersion(int $version): bool;
+
     public function findByNumber(int $number): ?AbcDef;
 
     public function clearTable(): bool;

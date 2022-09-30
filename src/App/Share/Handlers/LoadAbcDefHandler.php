@@ -32,14 +32,24 @@ class LoadAbcDefHandler implements LoadAbcDefInterface
 
     public function handle(string $parseUrl): void
     {
+        $currentVersion = $this->repositoryNumbers->getCurrentVersion();
+
         $links = $this->getLinksFromUrl($parseUrl);
 
-        $this->repositoryNumbers->clearTable();
         foreach ($links as $link) {
-            $this->loadDataFromCsv($link);
+            $this->loadDataFromCsv($link, $currentVersion + 1);
         }
         //сохраним остатки
         $this->saveItems();
+
+        $dropVersion = $this->errorLines > 0 ? $currentVersion + 1 : $currentVersion;
+
+        $this->repositoryNumbers->deleteVersion($dropVersion);
+
+        if ($this->errorLines) {
+            $this->logger->error('load abc def', ['error_lines' => $this->errorLines]);
+        }
+
         // запишем что вышло в лог
         $this->logger->info('abc def done', ['save_lines' => $this->saveLines, 'error_lines' => $this->errorLines]);
     }
@@ -47,37 +57,49 @@ class LoadAbcDefHandler implements LoadAbcDefInterface
     /**
      * @param string $linkCsv
      */
-    private function loadDataFromCsv(string $linkCsv): void
+    private function loadDataFromCsv(string $linkCsv, int $version): void
     {
         try {
             $file = new \SplFileObject($linkCsv, '', context: stream_context_create($this->getRequestOptions()));
             $file->fgets();
             while (!$file->eof()) {
-                $line = $file->fgetcsv(';');
+                try {
+                    $line = $file->fgetcsv(';');
 
-                $region = $this->normalizer->buildRegion($line[5]);
-                $gmt = $this->gmt->searchGmtByRegion($region->getRegion());
-                // Если не смогли определить GMT региона, пропускаем строку
-                if (is_null($gmt)) {
+                    $region = $this->normalizer->buildRegion($line[5]);
+                    $gmt = $this->gmt->searchGmtByRegion($region->getRegion());
+                    // Если не смогли определить GMT региона, пропускаем строку
+                    if (is_null($gmt)) {
+                        $this->errorLines++;
+                        $this->logger->error('search GMT by region', ['region' => $region, 'line' => $line]);
+                        continue;
+                    }
+
+                    $item = new AbcDef(
+                        (int)$line[0],
+                        (int)$line[1],
+                        (int)$line[2],
+                        (int)$line[3],
+                        $line[4],
+                        $region,
+                        $gmt,
+                        (int)$line[6],
+                        $version
+                    );
+                    $this->addItem($item, self::MAX_SAVE_COUNT);
+                } catch (\Exception|\Error $e) {
                     $this->errorLines++;
-                    $this->logger->error('search GMT by region', ['region' => $region, 'line' => $line]);
-                    continue;
+                    $this->logger->warning('parse line', [
+                        'message' => $e->getMessage(),
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine(),
+                        'parse_line' => $line,
+                    ]);
                 }
-
-                $item = new AbcDef(
-                    (int)$line[0],
-                    (int)$line[1],
-                    (int)$line[2],
-                    (int)$line[3],
-                    $line[4],
-                    $region,
-                    $gmt,
-                    (int)$line[6],
-                );
-                $this->addItem($item, self::MAX_SAVE_COUNT);
             }
 
         } catch (\Exception|\Error $error) {
+            $this->errorLines += 100000;
             $this->logger->error('save abc_def', [
                 'message' => $error->getMessage(),
                 'file' => $error->getFile(),
